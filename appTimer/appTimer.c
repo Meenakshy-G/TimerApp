@@ -56,12 +56,12 @@ bool AppTimerEpochToTime(uint32 ulEpochtime)
     ulEpochtime = ulEpochtime / SECONDS_MINUTES;
     // Find hours.
     ulHours = (ulEpochtime) % HOURS; 
-
     ulYear = YEAR_STARTING;
     // Remaining days in epoch.
     ulEpochSeconds /= SECONDS_IN_DAY; 
 
-    while (INCREMENT)  // To find year.
+    // To find year.
+    while (INCREMENT)  
     {
         uint32 ulDayInYear = 0;
 
@@ -97,7 +97,6 @@ bool AppTimerEpochToTime(uint32 ulEpochtime)
         // Month count.
         ulMonth ++; 
     }
-
     // Find day.
     ulDay = ulEpochSeconds + INCREMENT; 
 
@@ -105,14 +104,16 @@ bool AppTimerEpochToTime(uint32 ulEpochtime)
     {
         ucAmOrPm[INDEX_ZERO] = 'P';
         ucAmOrPm[INDEX_ONE] = 'M';
+        ucAmOrPm[INDEX_TWO] = '\0';
+
         ulHours -= HOUR_LIMIT;
     }
     else
     {
         ucAmOrPm[INDEX_ZERO] = 'A';
         ucAmOrPm[INDEX_ONE] = 'M';
+        ucAmOrPm[INDEX_TWO] = '\0';
     }
-
     printf("TIME : %02lu:%02lu:%02lu %s\n", 
                    ulHours, ulMinutes, ulSeconds, ucAmOrPm);
     printf("DATE : %02lu/%02lu/%02lu \n", 
@@ -120,6 +121,7 @@ bool AppTimerEpochToTime(uint32 ulEpochtime)
 
     return true;
 }
+
 //**************************.AppTimerCheckLeapYear.*****************************
 // Purpose : To check if the given year is a leap year. 
 // Inputs  : A value corresponding to an year.
@@ -141,6 +143,35 @@ static bool AppTimerCheckLeapYear(uint32 ulYearToCheck)
     return blResult;
 }
 
-//******************************.mainFunction.**********************************
+//**************************.PrintLedStatus.************************************
+// Purpose : To print the status of LED.
+// Inputs  : A pointer flag blpLedStatus to check current led status.
+// Outputs : None
+// Return  : True for successfull completion, else false. 
+// Notes   : None
+//******************************************************************************
+bool PrintLedStatus(bool *blpLedStatus)
+{
+    bool blResult = true;
+
+    if (NULL == blpLedStatus)
+    {
+        printf("NULL POINTER");
+        blResult = false;
+    }
+    else if (*blpLedStatus)
+    {
+        printf("LED ON\n");
+        *blpLedStatus = false;
+    }
+    else
+    {
+        printf("LED OFF\n");
+        *blpLedStatus = true;
+    }
+
+    return blResult;
+}
+
 //******************************************************************************
 // EOF
